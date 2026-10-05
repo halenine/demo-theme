@@ -1,0 +1,904 @@
+@import url("https://fonts.googleapis.com/css2?family=Cardo:wght@400;700&family=Inter:wght@400;500;600;700&display=swap");
+
+/* ==========================================================================
+   BHTA - Blue Harbor Trade Alliance
+   Cobalt portal theme (Global Elements > Custom CSS URL)
+
+   Self-contained: no @import of other BHTA files. Cobalt loads this file with
+   crossorigin + integrity, so every file it pulls in must be CORS-enabled
+   (Google Fonts is; the WordPress uploads folders are not).
+
+   SPECIFICITY: Nevia's color.css loads AFTER this file, so equal selectors
+   would lose. Rules are scoped under #wrapper / #navigation / html body to
+   outrank Nevia without leaning on !important. !important is used only where
+   Nevia itself uses it or the markup carries inline styles.
+
+   Contrast (WCAG 2.1 AA, 4.5:1 for body text) - checked pairs:
+     #FFFFFF on #123A3F  12.3:1   nav, buttons, footer, title band
+     #FFFFFF on #1C5A60   7.8:1   hover states
+     #FFFFFF on #197A62   5.3:1   active/secondary hover
+     #DDEAE5 on #123A3F  10.1:1   footer + title band body text
+     #E3B23C on #123A3F   6.3:1   footer link hover
+     #197A62 on #FFFFFF   5.3:1   body links
+     #636363 on #FFFFFF   5.9:1   secondary text
+   ========================================================================== */
+
+:root {
+	--bhta-teal-900:  #123A3F;
+	--bhta-teal-950:  #0C2A2E;
+	--bhta-teal-700:  #1C5A60;
+	--bhta-green-500: #2FA98C;
+	--bhta-green-700: #23876F;
+	--bhta-green-800: #197A62;
+	--bhta-gold-500:  #E3B23C;
+	--bhta-seafoam:   #9BE3D0;
+	--bhta-mint-100:  #DDEAE5;
+	--bhta-mint-050:  #EFF6F3;
+	--bhta-surface:   #FFFFFF;
+	--bhta-ink:       #111111;
+	--bhta-ink-2:     #636363;
+	--bhta-ink-3:     #8A8A8A;
+	--bhta-line:      #DCE5E2;
+	--bhta-line-soft: #EAF0EE;
+	--bhta-danger:    #B3261E;
+	--bhta-danger-bg: #FDECEA;
+	--bhta-font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+	--bhta-font-head: "Cardo", "Iowan Old Style", Georgia, "Times New Roman", serif;
+	--bhta-radius:    8px;
+	--bhta-radius-sm: 6px;
+	--bhta-shadow:    0 1px 2px rgba(18, 58, 63, .06), 0 6px 18px rgba(18, 58, 63, .07);
+	--bhta-shadow-lg: 0 2px 4px rgba(18, 58, 63, .08), 0 12px 32px rgba(18, 58, 63, .12);
+	--bhta-ease:      200ms cubic-bezier(.2, .7, .3, 1);
+}
+
+/* ==========================================================================
+   1. Page canvas and type
+   ========================================================================== */
+
+html body {
+	/* replaces Nevia's grey noise.png */
+	background: var(--bhta-mint-050) none !important;
+	font-family: var(--bhta-font-body);
+	color: var(--bhta-ink);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+html body #wrapper {
+	background: transparent;
+	font-family: var(--bhta-font-body);
+}
+
+#wrapper p,
+#wrapper li,
+#wrapper td,
+#wrapper th,
+#wrapper label,
+#wrapper input,
+#wrapper select,
+#wrapper textarea,
+#wrapper button {
+	font-family: var(--bhta-font-body);
+}
+
+#wrapper h1,
+#wrapper h2,
+#wrapper h3 {
+	font-family: var(--bhta-font-head);
+	font-weight: 400;
+	color: var(--bhta-teal-900);
+	letter-spacing: 0;
+}
+
+#wrapper h4,
+#wrapper h5,
+#wrapper h6 {
+	font-family: var(--bhta-font-body);
+	font-weight: 600;
+	color: var(--bhta-teal-900);
+}
+
+#wrapper a {
+	color: var(--bhta-green-800);
+	transition: color var(--bhta-ease), background-color var(--bhta-ease);
+}
+
+#wrapper a:hover,
+#wrapper a:focus {
+	color: var(--bhta-teal-900);
+}
+
+#wrapper a:focus-visible,
+#wrapper button:focus-visible,
+#wrapper input:focus-visible,
+#wrapper select:focus-visible,
+#wrapper textarea:focus-visible {
+	outline: 3px solid var(--bhta-gold-500);
+	outline-offset: 2px;
+}
+
+/* ==========================================================================
+   2. Brand strip + header
+   ========================================================================== */
+
+/* Nevia's 5px blue line -> brand gradient, echoing the logo's waves + sun */
+html body #top-line {
+	height: 6px;
+	background: linear-gradient(90deg, var(--bhta-teal-900) 0%, var(--bhta-green-500) 55%, var(--bhta-gold-500) 100%);
+}
+
+html body #PageHeader {
+	background: var(--bhta-surface);
+	box-shadow: 0 1px 0 var(--bhta-line);
+}
+
+html body #header {
+	padding-top: 18px;
+	padding-bottom: 18px;
+}
+
+#header #logo h1 {
+	margin: 0;
+	line-height: 0;
+}
+
+#header #logo img {
+	display: block;
+	width: auto;
+	height: auto;
+	max-height: 84px;
+	max-width: 100%;
+}
+
+/* "Name | Logout" utility links, top right */
+#header .six.columns,
+#header .six.columns a {
+	font-family: var(--bhta-font-body);
+	font-size: 14px;
+	font-weight: 500;
+}
+
+#header .six.columns a {
+	color: var(--bhta-teal-900);
+}
+
+#header .six.columns a:hover {
+	color: var(--bhta-green-800);
+	text-decoration: underline;
+}
+
+/* ==========================================================================
+   3. Main navigation  (Nevia: #4C4C4C bar, #006FBA active)
+   ========================================================================== */
+
+html body #navigation {
+	background-color: var(--bhta-teal-900);
+	height: auto;
+	min-height: 52px;
+	border-radius: 0;
+	box-shadow: 0 4px 14px rgba(18, 58, 63, .18);
+}
+
+#navigation .left-corner,
+#navigation .right-corner {
+	display: none;
+}
+
+#navigation ul.menu > li > a {
+	font-family: var(--bhta-font-body);
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: .01em;
+	color: #FFFFFF;
+	padding: 17px 20px 17px;
+	border-right: 1px solid rgba(255, 255, 255, .08);
+	background-color: transparent;
+}
+
+#navigation ul.menu > li:hover > a,
+#navigation ul.menu > li > a:hover,
+#navigation ul.menu > li > a:focus {
+	background-color: var(--bhta-teal-700);
+	color: #FFFFFF;
+	border-right-color: rgba(255, 255, 255, .08);
+}
+
+/* Active tab: darker teal + gold underline (not colour alone) */
+#navigation ul.menu > li.active,
+#navigation ul.menu > li.active:hover > a,
+#navigation ul.menu > li.active > a:hover {
+	background-color: var(--bhta-teal-950);
+}
+
+#navigation ul.menu > li.active > a {
+	box-shadow: inset 0 -4px 0 var(--bhta-gold-500);
+	font-weight: 600;
+}
+
+/* Nevia glyph icons are white sprites - keep them, soften slightly */
+#navigation ul.menu > li > a i {
+	opacity: .9;
+}
+
+/* Dropdowns */
+#navigation ul.menu li > ul {
+	background: var(--bhta-surface);
+	border: 1px solid var(--bhta-line);
+	border-top: 3px solid var(--bhta-green-500);
+	border-radius: 0 0 var(--bhta-radius-sm) var(--bhta-radius-sm);
+	box-shadow: var(--bhta-shadow-lg);
+	overflow: hidden;
+}
+
+#navigation ul.menu li > ul li a {
+	font-family: var(--bhta-font-body);
+	font-size: 14px;
+	color: var(--bhta-ink);
+	background: var(--bhta-surface);
+	border-bottom: 1px solid var(--bhta-line-soft);
+}
+
+#navigation ul.menu li > ul li a:hover,
+#navigation ul.menu li > ul li a:focus {
+	color: var(--bhta-teal-900);
+	background: var(--bhta-mint-050);
+}
+
+/* Mobile select menu */
+#navigation select.selectnav {
+	font-family: var(--bhta-font-body);
+	border: 1px solid var(--bhta-teal-700);
+	border-radius: var(--bhta-radius-sm);
+	background: var(--bhta-surface);
+	color: var(--bhta-ink);
+	padding: 8px 10px;
+}
+
+/* ==========================================================================
+   4. Page title band  (white strip -> teal hero band like the WP site)
+   ========================================================================== */
+
+html body #content {
+	padding-top: 0;
+	background: transparent;
+}
+
+#wrapper .page-title {
+	width: 100% !important;
+	box-sizing: border-box;
+	background: linear-gradient(120deg, var(--bhta-teal-900) 0%, var(--bhta-teal-700) 100%);
+	border: 0;
+	border-radius: 0 0 var(--bhta-radius) var(--bhta-radius);
+	box-shadow: var(--bhta-shadow);
+	padding: 30px 32px 26px !important;
+	margin: 0 0 28px;
+}
+
+#wrapper .page-title h1,
+#wrapper .page-title h2,
+#wrapper #pageTitleDiv {
+	font-family: var(--bhta-font-head);
+	font-size: 34px;
+	font-weight: 400;
+	line-height: 1.2;
+	color: #FFFFFF;
+	margin: 0;
+	padding: 0;
+}
+
+/* Gold rule under the title - the sun in the logo */
+#wrapper .page-title h1::after,
+#wrapper .page-title h2::after {
+	content: "";
+	display: block;
+	width: 52px;
+	height: 3px;
+	margin-top: 14px;
+	border-radius: 2px;
+	background: var(--bhta-gold-500);
+}
+
+#wrapper .page-title p,
+#wrapper #intrdouctionTextPageTextDiv,
+#wrapper #intrdouctionTextPageTextDiv p {
+	color: var(--bhta-mint-100);
+	font-size: 15px;
+	line-height: 1.6;
+	max-width: 70ch;
+}
+
+#wrapper .page-title a {
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+
+/* ==========================================================================
+   5. Content panels  (dashboard tiles, notices)
+   ========================================================================== */
+
+#wrapper .large-notice {
+	background: var(--bhta-surface);
+	border: 1px solid var(--bhta-line);
+	border-top: 4px solid var(--bhta-green-500);
+	border-radius: var(--bhta-radius);
+	box-shadow: var(--bhta-shadow);
+	padding: 28px 30px;
+	transition: box-shadow var(--bhta-ease);
+}
+
+#wrapper .large-notice:hover {
+	box-shadow: var(--bhta-shadow-lg);
+}
+
+#wrapper .large-notice h2 {
+	font-size: 26px;
+	line-height: 1.2;
+	margin-bottom: 14px;
+}
+
+#wrapper .large-notice h3 {
+	font-family: var(--bhta-font-body);
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--bhta-teal-900);
+}
+
+#wrapper .large-notice p,
+#wrapper .large-notice div {
+	color: var(--bhta-ink-2);
+}
+
+#wrapper .large-notice h2.tilesection,
+#wrapper .large-notice h3.tilesection {
+	color: var(--bhta-teal-900);
+}
+
+#wrapper .large-notice div.tilesection {
+	font-size: 15px;
+	line-height: 1.65;
+	color: var(--bhta-ink);
+}
+
+#wrapper .large-notice i[class^="icon-"],
+#wrapper .tilesection i[class^="icon-"] {
+	color: var(--bhta-green-800);
+}
+
+/* Floated panel icons (calendar, building) */
+#wrapper .large-notice-icon {
+	width: 32px;
+	height: 32px;
+	margin: 0 12px 0 0;
+}
+
+/* Photo drop target */
+#wrapper .droparea .instructions {
+	border: 2px dashed var(--bhta-green-500);
+	border-radius: var(--bhta-radius);
+	background: var(--bhta-mint-050);
+	color: var(--bhta-teal-900);
+	font-size: 12.5px;
+	opacity: 1;
+}
+
+#wrapper .droparea .instructions.over {
+	background: var(--bhta-mint-100);
+}
+
+/* Membership / org link lists */
+#wrapper .plus-list li {
+	color: var(--bhta-ink);
+}
+
+#wrapper .plus-list li a,
+#wrapper .plus-list li strong a {
+	color: var(--bhta-green-800);
+	font-weight: 600;
+}
+
+/* Upcoming events: date tile */
+#wrapper .date .day {
+	font-family: var(--bhta-font-head);
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--bhta-teal-900);
+	background: var(--bhta-mint-100);
+	border: 0;
+	border-radius: var(--bhta-radius-sm) var(--bhta-radius-sm) 0 0;
+}
+
+#wrapper .date .month,
+#wrapper .month {
+	font-family: var(--bhta-font-body);
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .08em;
+	color: #FFFFFF;
+	background: var(--bhta-teal-900);
+	border-radius: 0 0 var(--bhta-radius-sm) var(--bhta-radius-sm);
+	box-shadow: none;
+}
+
+#wrapper .recent-blog h4,
+#wrapper .recent-blog h4 a {
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--bhta-teal-900);
+}
+
+#wrapper .recent-blog a:hover h4,
+#wrapper .recent-blog h4 a:hover {
+	color: var(--bhta-green-800);
+}
+
+#wrapper .recent-blog h5,
+#wrapper .recent-blog p {
+	color: var(--bhta-ink-2);
+}
+
+/* ==========================================================================
+   6. Buttons  (Nevia .button.color = #006FBA)
+   ========================================================================== */
+
+#wrapper .button,
+#wrapper input[type="button"],
+#wrapper input[type="submit"],
+#wrapper button.button {
+	font-family: var(--bhta-font-body);
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.3;
+	padding: 11px 22px;
+	border: 0;
+	border-radius: var(--bhta-radius-sm);
+	cursor: pointer;
+	white-space: nowrap;
+	transition: background-color var(--bhta-ease), color var(--bhta-ease), box-shadow var(--bhta-ease), transform var(--bhta-ease);
+}
+
+#wrapper .button.color,
+#wrapper input[type="submit"],
+#wrapper input[type="button"].color {
+	background: var(--bhta-teal-900);
+	color: #FFFFFF;
+	box-shadow: 0 2px 6px rgba(18, 58, 63, .22);
+}
+
+#wrapper .button.color:hover,
+#wrapper .button.color:focus,
+#wrapper input[type="submit"]:hover,
+#wrapper input[type="submit"]:focus {
+	background: var(--bhta-teal-700);
+	color: #FFFFFF;
+	box-shadow: 0 4px 12px rgba(18, 58, 63, .28);
+	transform: translateY(-1px);
+}
+
+#wrapper .button.color:active,
+#wrapper input[type="submit"]:active {
+	background: var(--bhta-teal-950);
+	transform: none;
+}
+
+#wrapper .button i,
+#wrapper .button img {
+	vertical-align: middle;
+	margin-right: 8px;
+}
+
+/* Secondary */
+#wrapper .button.gray,
+#wrapper .button.light {
+	background: var(--bhta-surface);
+	color: var(--bhta-teal-900);
+	box-shadow: inset 0 0 0 1.5px var(--bhta-teal-900);
+}
+
+#wrapper .button.gray:hover,
+#wrapper .button.light:hover,
+#wrapper .button.active {
+	background: var(--bhta-green-800);
+	color: #FFFFFF;
+	box-shadow: none;
+}
+
+/* ==========================================================================
+   7. Forms  (Modern control set)
+   ========================================================================== */
+
+#wrapper h3.desc {
+	font-family: var(--bhta-font-body);
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--bhta-teal-900);
+	line-height: 20px;
+	margin: 0 0 8px;
+	float: none;
+	width: auto;
+}
+
+#wrapper .input-control input[type="text"],
+#wrapper .input-control input[type="email"],
+#wrapper .input-control input[type="password"],
+#wrapper .input-control input[type="phone"],
+#wrapper .input-control input[type="url"],
+#wrapper .input-control select,
+#wrapper .input-control textarea,
+#wrapper .search-field,
+#wrapper .filters-dropdown {
+	font-size: 14px;
+	color: var(--bhta-ink);
+	background-color: var(--bhta-surface);
+	border: 1px solid #C9D6D2;
+	border-radius: var(--bhta-radius-sm);
+	min-height: 42px;
+	box-sizing: border-box;
+	transition: border-color var(--bhta-ease), box-shadow var(--bhta-ease);
+}
+
+#wrapper .input-control input:focus,
+#wrapper .input-control select:focus,
+#wrapper .input-control textarea:focus,
+#wrapper .search-field:focus {
+	border-color: var(--bhta-green-500);
+	box-shadow: 0 0 0 3px rgba(47, 169, 140, .22);
+	outline: none;
+}
+
+#wrapper .input-control.text .helper,
+#wrapper .input-control.password .helper {
+	background: transparent;
+	color: var(--bhta-ink-3);
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+#wrapper .input-control.text .helper:hover {
+	background: var(--bhta-mint-050);
+	color: var(--bhta-teal-900);
+}
+
+#wrapper .input-control.checkbox input[type="checkbox"]:checked ~ .helper:before,
+#wrapper .input-control.radio input[type="radio"]:checked ~ .helper:before {
+	background: var(--bhta-green-800);
+	border-color: var(--bhta-green-800);
+}
+
+#wrapper .search-btn-widget {
+	background-color: var(--bhta-teal-900);
+}
+
+#wrapper .search-btn-widget:hover {
+	background-color: var(--bhta-teal-700);
+}
+
+#wrapper .filters-dropdown.active {
+	background-color: var(--bhta-surface);
+	color: var(--bhta-teal-900);
+	border-color: var(--bhta-green-500);
+}
+
+#wrapper p.error,
+#wrapper .error {
+	color: var(--bhta-danger);
+}
+
+/* ==========================================================================
+   8. Tables / results grids
+   ========================================================================== */
+
+#wrapper table.standard-table {
+	border: 1px solid var(--bhta-line);
+	border-radius: var(--bhta-radius);
+	border-collapse: separate !important;
+	border-spacing: 0;
+	overflow: hidden;
+	background: var(--bhta-surface);
+	box-shadow: var(--bhta-shadow);
+}
+
+#wrapper table.standard-table th {
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: .05em;
+	text-transform: uppercase;
+	color: #FFFFFF;
+	background: var(--bhta-teal-900);
+	border: 0;
+	padding: 13px 12px;
+}
+
+#wrapper table.standard-table th a {
+	color: #FFFFFF;
+}
+
+#wrapper table.standard-table td {
+	border-top: 1px solid var(--bhta-line-soft);
+	padding: 12px;
+}
+
+#wrapper table.standard-table tr:nth-child(even) td {
+	background: #F7FAF9;
+}
+
+#wrapper table.standard-table tr:hover td {
+	background: var(--bhta-mint-100);
+}
+
+/* ==========================================================================
+   9. Notices, pagination, calendar accents
+   ========================================================================== */
+
+#wrapper .infoSummary,
+#wrapper .alertSummary,
+#wrapper .successSummary {
+	background: var(--bhta-mint-100);
+	color: #14504A;
+	border: 1px solid #BFDCD3;
+	border-left: 4px solid var(--bhta-green-500);
+	border-radius: var(--bhta-radius-sm);
+}
+
+#wrapper .errorSummary {
+	background: var(--bhta-danger-bg);
+	color: var(--bhta-danger);
+	border: 1px solid #F3C4C0;
+	border-left: 4px solid var(--bhta-danger);
+	border-radius: var(--bhta-radius-sm);
+}
+
+#wrapper .pagination ul li a {
+	color: var(--bhta-teal-900);
+	background: var(--bhta-surface);
+	border: 1px solid var(--bhta-line);
+	border-radius: var(--bhta-radius-sm);
+	box-shadow: none;
+}
+
+#wrapper .pagination ul li a:hover {
+	background: var(--bhta-mint-050);
+	border-color: var(--bhta-green-500);
+}
+
+#wrapper .pagination .current,
+#wrapper .pagination ul li a.current {
+	background: var(--bhta-teal-900) !important;
+	border-color: var(--bhta-teal-900);
+	color: #FFFFFF;
+}
+
+#wrapper .fc .fc-toolbar h2 {
+	font-family: var(--bhta-font-head);
+	color: var(--bhta-teal-900);
+}
+
+#wrapper .fc .fc-button,
+#wrapper .fc .fc-state-default {
+	background: var(--bhta-surface);
+	background-image: none;
+	color: var(--bhta-teal-900);
+	border: 1px solid var(--bhta-line);
+	text-shadow: none;
+	box-shadow: none;
+}
+
+#wrapper .fc .fc-state-active,
+#wrapper .fc .fc-state-down {
+	background: var(--bhta-teal-900);
+	color: #FFFFFF;
+}
+
+#wrapper .fc .fc-event,
+#wrapper .fc-event-skin {
+	background-color: var(--bhta-teal-900);
+	border-color: var(--bhta-teal-900);
+	color: #FFFFFF;
+}
+
+#wrapper .fc .fc-day-header {
+	background: var(--bhta-mint-050);
+	color: var(--bhta-teal-900);
+}
+
+/* Remaining Nevia blue accent surfaces */
+html body #wrapper .highlight.color,
+html body #wrapper .caption-color,
+html body #wrapper .tags .current,
+html body #wrapper .tags a:hover,
+html body #wrapper .ui-widget-header {
+	background: var(--bhta-teal-900);
+	border-color: var(--bhta-teal-900);
+	color: #FFFFFF;
+}
+
+#wrapper .tabs-nav li.active a {
+	color: var(--bhta-teal-900);
+	border-top: 3px solid var(--bhta-gold-500);
+}
+
+/* Lightbox */
+html body .fancybox-overlay {
+	background: rgba(12, 42, 46, .6);
+}
+
+html body .fancybox-skin {
+	border-radius: var(--bhta-radius);
+}
+
+/* ==========================================================================
+   10. Footer  (Nevia: #424242 bar) -> deep teal, like the WP CTA band
+   ========================================================================== */
+
+html body #footer-bottom {
+	background: var(--bhta-teal-900);
+	border-top: 4px solid var(--bhta-green-500);
+	padding: 28px 0 22px;
+	color: var(--bhta-mint-100);
+	font-family: var(--bhta-font-body);
+}
+
+html body #footer-bottom .copyright {
+	color: var(--bhta-mint-100);
+	font-size: 13px;
+}
+
+html body #footer-bottom .copyright a,
+html body #footer-bottom .copyright span,
+html body #footer-bottom #sub-menu ul li a {
+	color: #FFFFFF !important;
+}
+
+html body #footer-bottom .copyright a:hover,
+html body #footer-bottom #sub-menu ul li a:hover {
+	color: var(--bhta-gold-500) !important;
+	text-decoration: underline;
+}
+
+html body #footer-bottom #sub-menu ul li {
+	color: var(--bhta-mint-100);
+	border-left-color: rgba(255, 255, 255, .2);
+	font-size: 13px;
+}
+
+/* BHTA footer snippet (bhta-footer.html) pasted into the footer field.
+   The snippet styles itself (teal card) so it reads fine even without this
+   file. With this file loaded, the whole bar is already teal, so the card
+   melts into it, takes the full row, and links pick up a gold hover. */
+html body #footer-bottom .eight.columns:has(.bhta-footer) {
+	width: 100%;
+	float: none;
+	margin-bottom: 14px;
+}
+
+html body #footer-bottom .bhta-footer {
+	background: transparent !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	padding: 4px 0 0 !important;
+	font-family: var(--bhta-font-body) !important;
+}
+
+html body #footer-bottom .bhta-footer__inner {
+	gap: 20px 48px !important;
+}
+
+html body #footer-bottom .bhta-footer__col {
+	flex: 0 1 180px !important;
+}
+
+html body #footer-bottom .bhta-footer a:hover,
+html body #footer-bottom .bhta-footer a:focus {
+	color: var(--bhta-gold-500) !important;
+	text-decoration: underline !important;
+}
+
+/* Cobalt's "Powered By / Cookie" column drops below the BHTA footer, right-aligned */
+html body #footer-bottom .eight.columns:has(.bhta-footer) + .eight.columns {
+	width: 100%;
+	float: none !important;
+	text-align: right;
+}
+
+/* Cookie consent banner + preferences modal (sit outside #wrapper).
+   The banner reads its colours from these variables. */
+html body {
+	--cobalt-consent-btn-primary-bg: #123A3F;
+	--cobalt-consent-btn-primary-color: #FFFFFF;
+	--cobalt-consent-btn-secondary-color: #123A3F;
+	--cobalt-consent-btn-ghost-color: #123A3F;
+	--cobalt-consent-focus-ring: #E3B23C;
+}
+
+html body .cobalt-consent-banner {
+	font-family: var(--bhta-font-body);
+	border-top: 4px solid var(--bhta-green-500);
+}
+
+html body .cobalt-consent-banner__title {
+	color: var(--bhta-teal-900);
+}
+
+html body .cobalt-consent-banner__policy-link {
+	color: var(--bhta-green-800);
+}
+
+html body .cobalt-consent-banner .cobalt-consent-banner__btn--primary {
+	background: var(--bhta-teal-900);
+	border-color: var(--bhta-teal-900);
+	color: #FFFFFF;
+}
+
+html body .cobalt-consent-banner .cobalt-consent-banner__btn--primary:hover {
+	background: var(--bhta-teal-700);
+	border-color: var(--bhta-teal-700);
+}
+
+html body .cobalt-consent-banner .cobalt-consent-banner__btn--secondary,
+html body .cobalt-consent-banner .cobalt-consent-banner__btn--ghost {
+	color: var(--bhta-teal-900);
+	border-color: var(--bhta-teal-900);
+}
+
+/* ==========================================================================
+   11. Responsive, motion, print
+   ========================================================================== */
+
+@media only screen and (max-width: 767px) {
+	#wrapper .page-title {
+		padding: 22px 20px 20px !important;
+		border-radius: 0;
+	}
+
+	#wrapper .page-title h1,
+	#wrapper .page-title h2,
+	#wrapper #pageTitleDiv {
+		font-size: 27px;
+	}
+
+	#header #logo img {
+		max-height: 60px;
+	}
+
+	html body #footer-bottom .bhta-footer__inner,
+	html body #footer-bottom .bhta-footer__legal {
+		flex-direction: column;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: .01ms !important;
+		animation-duration: .01ms !important;
+	}
+
+	#wrapper .button.color:hover,
+	#wrapper input[type="submit"]:hover {
+		transform: none;
+	}
+}
+
+@media print {
+	html body {
+		background: #FFFFFF !important;
+	}
+
+	html body #navigation,
+	html body #top-line,
+	html body #footer-bottom {
+		display: none !important;
+	}
+
+	#wrapper .page-title {
+		background: none;
+		box-shadow: none;
+	}
+
+	#wrapper .page-title h1,
+	#wrapper .page-title h2,
+	#wrapper #pageTitleDiv {
+		color: var(--bhta-teal-900);
+	}
+}
